@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/car_game_background"
+    tools:context=".Models.MenuActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/menu_TXT_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="Obstacles Race Game"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        android:textStyle="bold|italic" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/menu_BTN_fastGame"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/menu_TXT_menu"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="Fast Mode"
+        android:textSize="20dp"
+        android:backgroundTint="@color/orange_300"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/menu_BTN_slowGame"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/menu_BTN_fastGame"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Slow Mode"
+        android:textSize="20dp"
+        android:backgroundTint="@color/orange_300"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/menu_BTN_SensorGame"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/menu_BTN_slowGame"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Sensors"
+        android:textSize="20dp"
+        android:backgroundTint="@color/orange_300"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/menu_BTN_Records"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/menu_BTN_SensorGame"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Records"
+        android:textSize="20dp"
+        android:backgroundTint="@color/orange_300"/>
+
+</RelativeLayout>
