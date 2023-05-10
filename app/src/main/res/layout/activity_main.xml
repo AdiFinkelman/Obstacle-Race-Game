@@ -48,7 +48,7 @@
         android:text="000"
         android:textColor="@color/black"
         android:textSize="36dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <GridLayout
         android:id="@+id/main_Grid"
@@ -1328,7 +1328,7 @@
             android:layout_margin="1dp"
             android:rotation="270"
             android:visibility="invisible"
-            app:srcCompat="@drawable/trace" />
+            app:srcCompat="@drawable/car" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_IMG_car1"
@@ -1340,7 +1340,7 @@
             android:layout_margin="1dp"
             android:rotation="270"
             android:visibility="invisible"
-            app:srcCompat="@drawable/trace" />
+            app:srcCompat="@drawable/car" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_IMG_car2"
@@ -1351,7 +1351,7 @@
             android:layout_gravity="fill"
             android:layout_margin="1dp"
             android:rotation="270"
-            app:srcCompat="@drawable/trace" />
+            app:srcCompat="@drawable/car" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_IMG_car3"
@@ -1363,7 +1363,7 @@
             android:layout_margin="1dp"
             android:rotation="270"
             android:visibility="invisible"
-            app:srcCompat="@drawable/trace" />
+            app:srcCompat="@drawable/car" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_IMG_car4"
@@ -1375,7 +1375,7 @@
             android:layout_margin="1dp"
             android:rotation="270"
             android:visibility="invisible"
-            app:srcCompat="@drawable/trace" />
+            app:srcCompat="@drawable/car" />
 
     </GridLayout>
 

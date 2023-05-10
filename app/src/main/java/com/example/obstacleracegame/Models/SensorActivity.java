@@ -1,58 +1,69 @@
 package com.example.obstacleracegame.Models;
 
-import android.location.LocationRequest;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.obstacleracegame.Interfaces.LocationCallback;
+import com.example.obstacleracegame.Interfaces.StepCallback;
 import com.example.obstacleracegame.Logic.DataManager;
 import com.example.obstacleracegame.Logic.GameManager;
 import com.example.obstacleracegame.R;
-import com.example.obstacleracegame.SignalGenerator;
-import com.example.obstacleracegame.Utilities.MySP;
 import com.example.obstacleracegame.Utilities.StepDetector;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
-public class MainActivity extends AppCompatActivity {
+public class SensorActivity extends AppCompatActivity {
 
     private ShapeableImageView[] cars;
     private ShapeableImageView[][] rocks;
     private ShapeableImageView[][] coins;
     private ShapeableImageView[] hearts;
     private MaterialTextView score;
-    private GameManager gameManager;
     private StepDetector stepDetector;
-    private LocationCallback locationCallback;
-    private LocationRequest locationRequest;
+    private GameManager gameManager;
+    private ExtendedFloatingActionButton leftBTN;
+    private ExtendedFloatingActionButton rightBTN;
+    private ShapeableImageView car;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //alert = new AlertDialog.Builder(this);
-
         findView();
-
-//        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-//                .setWaitForAccurateLocation(false)
-//                .setMinUpdateIntervalMillis(500)
-//                .setMaxUpdateDelayMillis(1000)
-//                .build();
-//        locationCallback = new LocationCallback() {
-//            @Override
-//            public void onLocationResult(LocationResult locationResult) {
-//                if (locationResult == null) {
-//                    return;
-//                }
-//                for (Location location : locationResult.getLocations()) {
-//
-//                }
-//            }
-//        };
+        initStepDetector();
         gameManager = new GameManager(cars, rocks, coins, hearts, this.getApplicationContext(), score);
+        hideButtons();
+    }
+
+    private void initStepDetector() {
+        stepDetector = new StepDetector(this, new StepCallback() {
+            @Override
+            public void stepX() {
+                if (stepDetector.getStepsX() > 0)
+                    gameManager.moveLeft(car);
+
+                else if (stepDetector.getStepsX() < 0)
+                    gameManager.moveRight(car);
+            }
+
+            @Override
+            public void stepY() {
+                //pass
+            }
+
+            @Override
+            public void stepZ() {
+                // pass
+            }
+        });
+    }
+
+    private void hideButtons() {
+        leftBTN = findViewById(DataManager.getLeftBTNID());
+        rightBTN = findViewById(DataManager.getRightBTNID());
+        leftBTN.hide();
+        rightBTN.hide();
     }
 
     private void findView() {
@@ -82,44 +93,6 @@ public class MainActivity extends AppCompatActivity {
             cars[i] = findViewById(DataManager.getCarsID(i));
 
         score = findViewById(R.id.main_LBL_score);
+        car = findViewById(R.id.main_IMG_car2);
     }
-
-    public void moveLeft(View view) {
-        gameManager.moveLeft(view);
-    }
-
-    public void moveRight(View view) {
-        gameManager.moveRight(view);
-    }
-
-    @Override
-    protected void onPause() {
-        gameManager.stopTime();
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        gameManager.startTime();
-//        stepDetector.start();
-        super.onResume();
-        //gameManager.startLocationUpdates();
-    }
-
-    @Override
-    protected void onDestroy() {
-        gameManager.stopTime();
-        SignalGenerator.releaseMediaPlayer();
-        MySP.getInstance().saveToJason(gameManager.getScore(), 0.0, 0.0);
-        //      stepDetector.stop();
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        gameManager.stopTime();
-        //      stepDetector.stop();
-        super.onStop();
-    }
-
 }

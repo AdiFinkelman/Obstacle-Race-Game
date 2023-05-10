@@ -11,4 +11,8 @@
     <color name="blue_300">#9FA8DA</color>
     <color name="orange_300">#FFE082</color>
     <color name="orange_400">#97541A</color>
+    <color name="green_100">#C5E1A5</color>
+    <color name="blue_black">#000033</color>
+    <color name="antiqueWhite">#faebd7</color>
+    <color name="orange_178">#ffe4b2</color>
 </resources>

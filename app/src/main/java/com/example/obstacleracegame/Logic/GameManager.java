@@ -1,20 +1,21 @@
 package com.example.obstacleracegame.Logic;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-
-import com.example.obstacleracegame.Models.MainActivity;
+import com.example.obstacleracegame.Fragments.MapFragment;
+import com.example.obstacleracegame.Interfaces.LocationCallback;
 import com.example.obstacleracegame.Models.MenuActivity;
-import com.example.obstacleracegame.R;
+import com.example.obstacleracegame.Models.RecordsList;
 import com.example.obstacleracegame.SignalGenerator;
+import com.example.obstacleracegame.Utilities.MySP;
+import com.example.obstacleracegame.Utilities.StepDetector;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -35,9 +36,14 @@ public class GameManager {
     private int numOfColumns = DataManager.getNumOfCols();
     private int life = DataManager.getNumOfHearts();
     private CountDownTimer timer;
-    public AlertDialog.Builder alert;
-    private MediaPlayer mediaPlayer;
+    //    public AlertDialog.Builder alert;
     private Context context;
+    private RecordsList recordList;
+    private StepDetector stepDetector;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
+    private MapFragment mapFragment;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     public GameManager(ShapeableImageView[] cars, ShapeableImageView[][] rocks, ShapeableImageView[][] coins, ShapeableImageView[] hearts, Context context, MaterialTextView main_LBL_score) {
         this.rocks = rocks;
@@ -49,17 +55,11 @@ public class GameManager {
         this.main_LBL_score = main_LBL_score;
         startTime();
         this.context = context;
-        initMediaPlayer(context);
-    }
-
-    private void initMediaPlayer(Context context) {
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(context, R.raw.sound_crash);
-        }
+        this.recordList = new RecordsList();
     }
 
     public void moveLeft(View view) {
-        if(carIndex > 0) {
+        if (carIndex > 0) {
             cars[carIndex].setVisibility(View.INVISIBLE);
             cars[carIndex - 1].setVisibility(View.VISIBLE);
             carIndex--;
@@ -67,7 +67,7 @@ public class GameManager {
     }
 
     public void moveRight(View view) {
-        if(carIndex < numOfColumns - 1) {
+        if (carIndex < numOfColumns - 1) {
             cars[carIndex].setVisibility(View.INVISIBLE);
             cars[carIndex + 1].setVisibility(View.VISIBLE);
             carIndex++;
@@ -92,11 +92,11 @@ public class GameManager {
     public void siftDown() {
         for (int i = numOfRows - 1; i > 0; i--) {
             for (int j = 0; j < numOfColumns; j++) {
-                rocks[i][j].setVisibility(rocks[i-1][j].getVisibility());
-                rocks[i-1][j].setVisibility(View.INVISIBLE);
+                rocks[i][j].setVisibility(rocks[i - 1][j].getVisibility());
+                rocks[i - 1][j].setVisibility(View.INVISIBLE);
 
-                coins[i][j].setVisibility(coins[i-1][j].getVisibility());
-                coins[i-1][j].setVisibility(View.INVISIBLE);
+                coins[i][j].setVisibility(coins[i - 1][j].getVisibility());
+                coins[i - 1][j].setVisibility(View.INVISIBLE);
             }
         }
         collision();
@@ -111,7 +111,7 @@ public class GameManager {
             coinEvent(i);
         }
         score++;
-        updateScore();
+        updateScoreView();
     }
 
     private void crashEvent(int index) {
@@ -121,31 +121,19 @@ public class GameManager {
             crashes++;
             SignalGenerator.getInstance().toast("CRASH!", Toast.LENGTH_SHORT);
             SignalGenerator.getInstance().vibrate(500);
-            crashSoundEvent();
+            SignalGenerator.getInstance().sound(DataManager.getSoundCrashID());
         }
-    }
-
-    private void crashSoundEvent() {
-        mediaPlayer.release();
-        mediaPlayer = MediaPlayer.create(context, R.raw.sound_crash);
-        mediaPlayer.start();
     }
 
     private void coinEvent(int index) {
         if (cars[index].getVisibility() == View.VISIBLE && (coins[7][index].getVisibility() == View.VISIBLE || coins[8][index].getVisibility() == View.VISIBLE)) {
             coins[7][index].setVisibility(View.INVISIBLE);
             score += 5;
-            coinSoundEvent();
+            SignalGenerator.getInstance().sound(DataManager.getSoundCoinID());
         }
     }
 
-    private void coinSoundEvent() {
-        mediaPlayer.release();
-        mediaPlayer = MediaPlayer.create(context, R.raw.sound_coin);
-        mediaPlayer.start();
-    }
-
-    private void updateScore() {
+    private void updateScoreView() {
         if (score < 10)
             main_LBL_score.setText("00" + score);
         else if (score < 100)
@@ -163,6 +151,7 @@ public class GameManager {
                     siftDown();
                     getScore();
                 }
+
                 @Override
                 public void onFinish() {
                     timer.cancel();
@@ -174,53 +163,66 @@ public class GameManager {
     private long getDelayType() {
         return MenuActivity.getMode();
     }
+
     public int getScore() {
         return score;
     }
 
-//    public void initGame() {
-//        for (int i = 0; i < numOfRows; i++) {
-//            for (int j = 0; j < numOfColumns; j++) {
-//                rocks[i][j].setVisibility(View.INVISIBLE);
-//                coins[i][j].setVisibility(View.INVISIBLE);
+    private void gameOver() {
+        SignalGenerator.getInstance().toast("Game Over \uD83D\uDE23", Toast.LENGTH_SHORT);
+        //Log.d("CURRENT LOCATION", mapFragment.currentLocation.getLatitude() + "");
+        Log.d("SAVE TO JASON", getScore() + "");
+        MySP.getInstance().saveToJason(getScore(), mapFragment.getLat(), mapFragment.getLon());
+        stopTime();
+        // stopLocationUpdates();
+        openMenuActivity();
+    }
+
+//    public void getDeviceLocation() {
+//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
+//
+//        try {
+//            if (mapFragment.locationPermissionGranted) {
+//                Task location = fusedLocationProviderClient.getLastLocation();
+//                location.addOnCompleteListener(new OnCompleteListener() {
+//                    @Override
+//                    public void onComplete(@NonNull Task task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d(TAG, "onComplete: success");
+//                            mapFragment.currentLocation = (Location) task.getResult();
+//                            Log.d("LATITUDE", "" + currentLocation.getLatitude());
+//                            setLat(currentLocation.getLatitude());
+//                            setLon(currentLocation.getLongitude());
+//                            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+//                            gMap.addMarker(new MarkerOptions()
+//                                    .position(latLng));
+//                            moveCamera(latLng, DEFAULT_ZOOM);
+//                            //        gMap.animateCamera(CameraUpdateFactory.zoomTo(0.0f));
+//
+//                        } else {
+//                            Log.d(TAG, "onComplete: location is null");
+//                            SignalGenerator.getInstance().toast("Cant get location", Toast.LENGTH_SHORT);
+//                        }
+//                    }
+//                });
 //            }
-//        }
-//        for (int i = 0; i < life; i++) {
-//            hearts[i].setVisibility(View.VISIBLE);
-//        }
 //
-//        for (int i = 0; i < numOfColumns; i++) {
-//            cars[i].setVisibility(View.INVISIBLE);
+//        } catch (SecurityException e) {
+//            Log.d(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
 //        }
-//        crashes = 0;
-//        carIndex = 2;
-//        score = 0;
-//        cars[carIndex].setVisibility(View.VISIBLE);
-//
-//        startTime();
 //    }
 
-    private void gameOver() {
-        stopTime();
-        openMenuActivity();
-//        alert.setMessage("press RACE to play again");
-//        alert.setCancelable(false);
-//        alert.setPositiveButton("RACE", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                initGame();
-//            }
-//        });
-//
-//        AlertDialog message = alert.create();
-//        message.setTitle("Game Over");
-//        message.show();
-       }
+//    private void stopLocationUpdates() {
+//        fusedLocationProviderClient.removeLocationUpdates((com.google.android.gms.location.LocationCallback) locationCallback);
+//    }
+
+//    public void startLocationUpdates() {
+//        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+//    }
 
     public void openMenuActivity() {
         Intent intent = new Intent(context.getApplicationContext(), MenuActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //initGame();
         context.startActivity(intent);
     }
 
@@ -228,12 +230,5 @@ public class GameManager {
         if (timer != null)
             timer.cancel();
         timer = null;
-    }
-
-    public void releaseMediaPlayer() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
     }
 }
