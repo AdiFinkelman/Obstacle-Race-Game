@@ -46,9 +46,9 @@ public class DataManager {
     private static int slowButtonID = R.id.menu_BTN_slowGame;
     private static int sensorButtonID = R.id.menu_BTN_SensorGame;
     private static int recordsButtonID = R.id.menu_BTN_Records;
-
     private static int soundCrashID = R.raw.sound_crash;
     private static int soundCoinID = R.raw.sound_coin;
+    private static final float DEFAULT_ZOOM = 12.0f;
 
     public static int getRocksID(int rowIndex, int colIndex) {
         return rocksID[rowIndex][colIndex];
@@ -112,5 +112,9 @@ public class DataManager {
 
     public static int getSoundCoinID() {
         return soundCoinID;
+    }
+
+    public static float getDefaultZoom() {
+        return DEFAULT_ZOOM;
     }
 }

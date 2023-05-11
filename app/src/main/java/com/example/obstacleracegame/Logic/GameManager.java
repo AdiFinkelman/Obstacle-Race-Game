@@ -2,20 +2,21 @@ package com.example.obstacleracegame.Logic;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.obstacleracegame.Fragments.MapFragment;
-import com.example.obstacleracegame.Interfaces.LocationCallback;
+import androidx.core.app.ActivityCompat;
+
 import com.example.obstacleracegame.Models.MenuActivity;
+import com.example.obstacleracegame.Models.Record;
 import com.example.obstacleracegame.Models.RecordsList;
 import com.example.obstacleracegame.SignalGenerator;
 import com.example.obstacleracegame.Utilities.MySP;
 import com.example.obstacleracegame.Utilities.StepDetector;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -36,14 +37,13 @@ public class GameManager {
     private int numOfColumns = DataManager.getNumOfCols();
     private int life = DataManager.getNumOfHearts();
     private CountDownTimer timer;
-    //    public AlertDialog.Builder alert;
     private Context context;
     private RecordsList recordList;
+    private Record record;
     private StepDetector stepDetector;
-    private LocationCallback locationCallback;
-    private LocationRequest locationRequest;
-    private MapFragment mapFragment;
-    FusedLocationProviderClient fusedLocationProviderClient;
+    private double latitude;
+    private double longitude;
+    private Location lastKnownLocation;
 
     public GameManager(ShapeableImageView[] cars, ShapeableImageView[][] rocks, ShapeableImageView[][] coins, ShapeableImageView[] hearts, Context context, MaterialTextView main_LBL_score) {
         this.rocks = rocks;
@@ -170,55 +170,52 @@ public class GameManager {
 
     private void gameOver() {
         SignalGenerator.getInstance().toast("Game Over \uD83D\uDE23", Toast.LENGTH_SHORT);
-        //Log.d("CURRENT LOCATION", mapFragment.currentLocation.getLatitude() + "");
-        Log.d("SAVE TO JASON", getScore() + "");
-        MySP.getInstance().saveToJason(getScore(), mapFragment.getLat(), mapFragment.getLon());
+        record = setRecordLatlng();
+
+        if (record.getLatitude() != 0.0 || record.getLongitude() != 0.0)
+            MySP.getInstance().saveToJason(getScore(), record.getLatitude(), record.getLongitude());
+        else
+            SignalGenerator.getInstance().toast("Last known location is null", Toast.LENGTH_SHORT);
         stopTime();
-        // stopLocationUpdates();
         openMenuActivity();
     }
 
-//    public void getDeviceLocation() {
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view.getContext());
-//
-//        try {
-//            if (mapFragment.locationPermissionGranted) {
-//                Task location = fusedLocationProviderClient.getLastLocation();
-//                location.addOnCompleteListener(new OnCompleteListener() {
-//                    @Override
-//                    public void onComplete(@NonNull Task task) {
-//                        if (task.isSuccessful()) {
-//                            Log.d(TAG, "onComplete: success");
-//                            mapFragment.currentLocation = (Location) task.getResult();
-//                            Log.d("LATITUDE", "" + currentLocation.getLatitude());
-//                            setLat(currentLocation.getLatitude());
-//                            setLon(currentLocation.getLongitude());
-//                            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-//                            gMap.addMarker(new MarkerOptions()
-//                                    .position(latLng));
-//                            moveCamera(latLng, DEFAULT_ZOOM);
-//                            //        gMap.animateCamera(CameraUpdateFactory.zoomTo(0.0f));
-//
-//                        } else {
-//                            Log.d(TAG, "onComplete: location is null");
-//                            SignalGenerator.getInstance().toast("Cant get location", Toast.LENGTH_SHORT);
-//                        }
-//                    }
-//                });
-//            }
-//
-//        } catch (SecurityException e) {
-//            Log.d(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
-//        }
-//    }
+    private Record setRecordLatlng() {
+        record = new Record();
+        record.setScore("" + score);
+        record.setTitle("Score");
 
-//    private void stopLocationUpdates() {
-//        fusedLocationProviderClient.removeLocationUpdates((com.google.android.gms.location.LocationCallback) locationCallback);
-//    }
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-//    public void startLocationUpdates() {
-//        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-//    }
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            SignalGenerator.getInstance().toast("You should permit location access", Toast.LENGTH_SHORT);
+            return null;
+        }
+
+        Location currLocation = null;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            currLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        if (currLocation == null && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            currLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+        if (currLocation == null && locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+            currLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        }
+
+        if (currLocation != null) {
+            latitude = currLocation.getLatitude();
+            longitude = currLocation.getLongitude();
+        }
+
+        record.setLatitude(latitude);
+        record.setLongitude(longitude);
+
+        return record;
+    }
 
     public void openMenuActivity() {
         Intent intent = new Intent(context.getApplicationContext(), MenuActivity.class);

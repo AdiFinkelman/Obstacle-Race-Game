@@ -1,17 +1,14 @@
 package com.example.obstacleracegame.Models;
 
-import android.location.LocationRequest;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.obstacleracegame.Interfaces.LocationCallback;
 import com.example.obstacleracegame.Logic.DataManager;
 import com.example.obstacleracegame.Logic.GameManager;
 import com.example.obstacleracegame.R;
 import com.example.obstacleracegame.SignalGenerator;
-import com.example.obstacleracegame.Utilities.MySP;
 import com.example.obstacleracegame.Utilities.StepDetector;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
@@ -25,33 +22,14 @@ public class MainActivity extends AppCompatActivity {
     private MaterialTextView score;
     private GameManager gameManager;
     private StepDetector stepDetector;
-    private LocationCallback locationCallback;
-    private LocationRequest locationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //alert = new AlertDialog.Builder(this);
 
         findView();
 
-//        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-//                .setWaitForAccurateLocation(false)
-//                .setMinUpdateIntervalMillis(500)
-//                .setMaxUpdateDelayMillis(1000)
-//                .build();
-//        locationCallback = new LocationCallback() {
-//            @Override
-//            public void onLocationResult(LocationResult locationResult) {
-//                if (locationResult == null) {
-//                    return;
-//                }
-//                for (Location location : locationResult.getLocations()) {
-//
-//                }
-//            }
-//        };
         gameManager = new GameManager(cars, rocks, coins, hearts, this.getApplicationContext(), score);
     }
 
@@ -101,24 +79,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         gameManager.startTime();
-//        stepDetector.start();
+        //stepDetector.start();
         super.onResume();
-        //gameManager.startLocationUpdates();
     }
 
     @Override
     protected void onDestroy() {
         gameManager.stopTime();
         SignalGenerator.releaseMediaPlayer();
-        MySP.getInstance().saveToJason(gameManager.getScore(), 0.0, 0.0);
-        //      stepDetector.stop();
+        //stepDetector.stop();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
         gameManager.stopTime();
-        //      stepDetector.stop();
+        //stepDetector.stop();
         super.onStop();
     }
 

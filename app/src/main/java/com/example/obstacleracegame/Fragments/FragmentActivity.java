@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.obstacleracegame.Interfaces.Map_Callback;
+import com.example.obstacleracegame.Logic.DataManager;
 import com.example.obstacleracegame.R;
+import com.google.android.gms.maps.model.LatLng;
 
 public class FragmentActivity extends AppCompatActivity {
 
@@ -14,8 +16,8 @@ public class FragmentActivity extends AppCompatActivity {
 
     Map_Callback map_callback = new Map_Callback() {
         @Override
-        public void recordClick() {
-            mapFragment.getLocation();
+        public void recordClick(double latitude, double longitude) {
+            mapFragment.moveCamera(new LatLng(latitude, longitude), DataManager.getDefaultZoom());
         }
     };
 
@@ -36,7 +38,6 @@ public class FragmentActivity extends AppCompatActivity {
 
     private void initFragments() {
         listFragment = new ListFragment();
-        //listFragment.setCallBack_sendClick(callBack_sendClick);
         mapFragment = new MapFragment();
     }
 }

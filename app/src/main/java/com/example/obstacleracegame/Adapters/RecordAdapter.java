@@ -42,12 +42,12 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         Record record = getItem(position);
         holder.record_LBL_title.setText(record.getTitle());
         holder.record_LBL_points.setText(record.getScore() + "");
-        holder.record_LAYOUT.setOnClickListener(v -> recordClick());
+        holder.record_LAYOUT.setOnClickListener(v -> recordClick(record.getLatitude(), record.getLongitude()));
     }
 
-    private void recordClick() {
+    private void recordClick(double latitude, double longitude) {
         if (map_callback != null) {
-            map_callback.recordClick();
+            map_callback.recordClick(latitude, longitude);
         }
     }
 

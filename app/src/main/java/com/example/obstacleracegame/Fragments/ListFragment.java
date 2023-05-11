@@ -19,15 +19,7 @@ public class ListFragment extends Fragment {
 
     private RecyclerView record_LST_records;
     private RecordsList recordsList;
-    private MapFragment mapFragment;
     private Map_Callback map_callback;
-
-//    Map_Callback map_callback = new Map_Callback() {
-//        @Override
-//        public void recordClick() {
-//            mapFragment.getLocation();
-//        }
-//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,7 +27,6 @@ public class ListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         findViews(view);
         initViews(view);
-        //setMap_callback(map_callback);
         return view;
     }
 
