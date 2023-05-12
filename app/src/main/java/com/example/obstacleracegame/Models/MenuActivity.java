@@ -2,7 +2,6 @@ package com.example.obstacleracegame.Models;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -12,57 +11,37 @@ import com.example.obstacleracegame.Logic.DataManager;
 import com.example.obstacleracegame.R;
 
 public class MenuActivity extends AppCompatActivity {
-    private AppCompatButton fastBTN;
-    private AppCompatButton slowBTN;
-    private AppCompatButton sensorBTN;
-    private AppCompatButton recordsBTN;
-    private static final int FAST_MODE = 500;
-    private static final int SLOW_MODE = 1000;
     private static int mode;
+    private static boolean sensorMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        fastBTN = findViewById(DataManager.getFastId());
-        fastBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mode = FAST_MODE;
-                openMainActivity();
-            }
+        AppCompatButton fastBTN = findViewById(DataManager.getFastId());
+        fastBTN.setOnClickListener(v -> {
+            mode = DataManager.getFastMode();
+            setSensorMode(false);
+            openMainActivity();
         });
 
-        slowBTN = findViewById(DataManager.getSlowId());
-        slowBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mode = SLOW_MODE;
-                openMainActivity();
-            }
+        AppCompatButton slowBTN = findViewById(DataManager.getSlowId());
+        slowBTN.setOnClickListener(v -> {
+            mode = DataManager.getSlowMode();
+            setSensorMode(false);
+            openMainActivity();
         });
 
-        sensorBTN = findViewById(DataManager.getSensorButtonID());
-        sensorBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSensorActivity();
-            }
+        AppCompatButton sensorBTN = findViewById(DataManager.getSensorButtonID());
+        sensorBTN.setOnClickListener(v -> {
+            mode = DataManager.getFastMode();
+            setSensorMode(true);
+            openMainActivity();
         });
 
-        recordsBTN = findViewById(DataManager.getRecordsID());
-        recordsBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRecordsActivity();
-            }
-        });
-    }
-
-    private void openSensorActivity() {
-        Intent intent = new Intent(this, SensorActivity.class);
-        startActivity(intent);
+        AppCompatButton recordsBTN = findViewById(DataManager.getRecordsID());
+        recordsBTN.setOnClickListener(v -> openRecordsActivity());
     }
 
     private void openRecordsActivity() {
@@ -77,5 +56,13 @@ public class MenuActivity extends AppCompatActivity {
 
     public static int getMode() {
         return mode;
+    }
+
+    public static boolean getSensorMode() {
+        return sensorMode;
+    }
+
+    public static void setSensorMode(boolean mode) {
+        sensorMode = mode;
     }
 }

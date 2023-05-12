@@ -2,7 +2,6 @@ package com.example.obstacleracegame.Fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.obstacleracegame.R;
 import com.example.obstacleracegame.SignalGenerator;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapFragment extends Fragment {
@@ -28,10 +27,9 @@ public class MapFragment extends Fragment {
     private final int FINE_PERMISSION_CODE = 1;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    public Location currentLocation;
-    private FusedLocationProviderClient fusedLocationProviderClient;
     public boolean locationPermissionGranted = false;
     private View view;
+    private Marker marker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,9 +43,12 @@ public class MapFragment extends Fragment {
     }
 
     public void moveCamera(LatLng latLng, float zoom) {
-        gMap.addMarker(new MarkerOptions()
+        if (marker != null)
+            marker.remove();
+        marker = gMap.addMarker(new MarkerOptions()
                 .position(latLng));
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 0.0f));
+        gMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
     }
 
     private void initMap() {
@@ -68,7 +69,8 @@ public class MapFragment extends Fragment {
                 initMap();
             }
         } else {
-            ActivityCompat.requestPermissions(this.getActivity(), permission, FINE_PERMISSION_CODE);
+            if (this.getActivity() != null)
+                ActivityCompat.requestPermissions(this.getActivity(), permission, FINE_PERMISSION_CODE);
         }
     }
 

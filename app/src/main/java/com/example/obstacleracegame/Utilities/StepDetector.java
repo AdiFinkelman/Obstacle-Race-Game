@@ -5,18 +5,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import com.example.obstacleracegame.Interfaces.StepCallback;
 
 public class StepDetector {
-    private Sensor sensor;
-    private SensorManager sensorManager;
-    private StepCallback stepCallback;
-    private int stepCounterX = 0;
-    private int stepCounterY = 0;
-    private long timestamp = 0;
-
+    private final Sensor sensor;
+    private final SensorManager sensorManager;
+    public StepCallback stepCallback;
+    public long timestamp = 0;
     private SensorEventListener sensorEventListener;
 
     public StepDetector(Context context, StepCallback stepCallback) {
@@ -31,8 +27,8 @@ public class StepDetector {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 float x = event.values[0];
-                float y = event.values[1];
-                calculateStep(x, y);
+                //float y = event.values[1];
+                calculateStep(x);
             }
 
             @Override
@@ -42,39 +38,19 @@ public class StepDetector {
         };
     }
 
-    private void calculateStep(float x, float y) {
+    private void calculateStep(float x) {
         if (System.currentTimeMillis() - timestamp > 500) {
             timestamp = System.currentTimeMillis();
-            if (x > 6.0) {
-                stepCounterX++;
+            if (x > 3.0) {
                 if (stepCallback != null)
-                    stepCallback.stepX();
-                //stepCounterX = 0;
-            } else if (x < -6.0) {
-                stepCounterX--;
-                if (stepCallback != null)
-                    stepCallback.stepX();
-                //stepCounterX = 0;
+                    stepCallback.stepLeft();
+
             }
-            Log.d("stepCounterX", "" + stepCounterX);
-            if (y > 6.0) {
-                stepCounterY++;
+            if (x < -3.0) {
                 if (stepCallback != null)
-                    stepCallback.stepY();
-            } else if (y < -6.0) {
-                stepCounterY--;
-                if (stepCallback != null)
-                    stepCallback.stepY();
+                    stepCallback.stepRight();
             }
         }
-    }
-
-    public int getStepsX() {
-        return stepCounterX;
-    }
-
-    public int getStepsY() {
-        return stepCounterY;
     }
 
     public void start() {

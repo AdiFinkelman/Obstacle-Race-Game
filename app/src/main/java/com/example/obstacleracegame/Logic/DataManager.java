@@ -9,7 +9,7 @@ public class DataManager {
     private static final int HEARTS_NUM = 3;
     private static final int CAR_START_POSITION = COLS / 2;
 
-    private static int[][] rocksID = {
+    private static final int[][] rocksID = {
             {R.id.main_mat0_0, R.id.main_mat0_1, R.id.main_mat0_2, R.id.main_mat0_3, R.id.main_mat0_4},
             {R.id.main_mat1_0, R.id.main_mat1_1, R.id.main_mat1_2, R.id.main_mat1_3, R.id.main_mat1_4},
             {R.id.main_mat2_0, R.id.main_mat2_1, R.id.main_mat2_2, R.id.main_mat2_3, R.id.main_mat2_4},
@@ -21,7 +21,7 @@ public class DataManager {
             {R.id.main_mat8_0, R.id.main_mat8_1, R.id.main_mat8_2, R.id.main_mat8_3, R.id.main_mat8_4}
     };
 
-    private static int[][] coinsID = {
+    private static final int[][] coinsID = {
             {R.id.main_coin0_0, R.id.main_coin0_1, R.id.main_coin0_2, R.id.main_coin0_3, R.id.main_coin0_4},
             {R.id.main_coin1_0, R.id.main_coin1_1, R.id.main_coin1_2, R.id.main_coin1_3, R.id.main_coin1_4},
             {R.id.main_coin2_0, R.id.main_coin2_1, R.id.main_coin2_2, R.id.main_coin2_3, R.id.main_coin2_4},
@@ -33,22 +33,24 @@ public class DataManager {
             {R.id.main_coin8_0, R.id.main_coin8_1, R.id.main_coin8_2, R.id.main_coin8_3, R.id.main_coin8_4}
     };
 
-    private static int[] heartsID = {
+    private static final int[] heartsID = {
             R.id.main_IMG_heart1, R.id.main_IMG_heart2, R.id.main_IMG_heart3
     };
 
-    private static int[] carsID = {
+    private static final int[] carsID = {
             R.id.main_IMG_car0, R.id.main_IMG_car1, R.id.main_IMG_car2, R.id.main_IMG_car3, R.id.main_IMG_car4
     };
-    private static int leftBTNID = R.id.main_BTN_left;
-    private static int rightBTNID = R.id.main_BTN_right;
-    private static int fastButtonID = R.id.menu_BTN_fastGame;
-    private static int slowButtonID = R.id.menu_BTN_slowGame;
-    private static int sensorButtonID = R.id.menu_BTN_SensorGame;
-    private static int recordsButtonID = R.id.menu_BTN_Records;
-    private static int soundCrashID = R.raw.sound_crash;
-    private static int soundCoinID = R.raw.sound_coin;
+    private static final int leftBTNID = R.id.main_BTN_left;
+    private static final int rightBTNID = R.id.main_BTN_right;
+    private static final int fastButtonID = R.id.menu_BTN_fastGame;
+    private static final int slowButtonID = R.id.menu_BTN_slowGame;
+    private static final int sensorButtonID = R.id.menu_BTN_SensorGame;
+    private static final int recordsButtonID = R.id.menu_BTN_Records;
+    private static final int soundCrashID = R.raw.sound_crash;
+    private static final int soundCoinID = R.raw.sound_coin;
     private static final float DEFAULT_ZOOM = 12.0f;
+    private static final int FAST_MODE = 500;
+    private static final int SLOW_MODE = 1000;
 
     public static int getRocksID(int rowIndex, int colIndex) {
         return rocksID[rowIndex][colIndex];
@@ -116,5 +118,13 @@ public class DataManager {
 
     public static float getDefaultZoom() {
         return DEFAULT_ZOOM;
+    }
+
+    public static int getFastMode() {
+        return FAST_MODE;
+    }
+
+    public static int getSlowMode() {
+        return SLOW_MODE;
     }
 }

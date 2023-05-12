@@ -13,10 +13,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.obstacleracegame.Models.MenuActivity;
 import com.example.obstacleracegame.Models.Record;
-import com.example.obstacleracegame.Models.RecordsList;
 import com.example.obstacleracegame.SignalGenerator;
 import com.example.obstacleracegame.Utilities.MySP;
-import com.example.obstacleracegame.Utilities.StepDetector;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -27,23 +25,20 @@ public class GameManager {
     int carIndex;
     private int crashes;
     private boolean flag = false;
-    private ShapeableImageView[] cars;
-    private ShapeableImageView[][] rocks;
-    private ShapeableImageView[][] coins;
-    private ShapeableImageView[] hearts;
-    private MaterialTextView main_LBL_score;
+    private final ShapeableImageView[] cars;
+    private final ShapeableImageView[][] rocks;
+    private final ShapeableImageView[][] coins;
+    private final ShapeableImageView[] hearts;
+    private final MaterialTextView main_LBL_score;
     int score = -1;
-    private int numOfRows = DataManager.getNumOfRows();
-    private int numOfColumns = DataManager.getNumOfCols();
-    private int life = DataManager.getNumOfHearts();
+    private final int numOfRows = DataManager.getNumOfRows();
+    private final int numOfColumns = DataManager.getNumOfCols();
+    private final int life = DataManager.getNumOfHearts();
     private CountDownTimer timer;
-    private Context context;
-    private RecordsList recordList;
+    private final Context context;
     private Record record;
-    private StepDetector stepDetector;
     private double latitude;
     private double longitude;
-    private Location lastKnownLocation;
 
     public GameManager(ShapeableImageView[] cars, ShapeableImageView[][] rocks, ShapeableImageView[][] coins, ShapeableImageView[] hearts, Context context, MaterialTextView main_LBL_score) {
         this.rocks = rocks;
@@ -55,7 +50,6 @@ public class GameManager {
         this.main_LBL_score = main_LBL_score;
         startTime();
         this.context = context;
-        this.recordList = new RecordsList();
     }
 
     public void moveLeft(View view) {

@@ -5,6 +5,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.obstacleracegame.Interfaces.StepCallback;
 import com.example.obstacleracegame.Logic.DataManager;
 import com.example.obstacleracegame.Logic.GameManager;
 import com.example.obstacleracegame.R;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialTextView score;
     private GameManager gameManager;
     private StepDetector stepDetector;
+    private final boolean sensorMode = MenuActivity.getSensorMode();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,29 @@ public class MainActivity extends AppCompatActivity {
         findView();
 
         gameManager = new GameManager(cars, rocks, coins, hearts, this.getApplicationContext(), score);
+
+        //setSensorMode(sensorMode);
+        if (sensorMode)
+            playSensor();
+    }
+
+    private void playSensor() {
+        findViewById(DataManager.getLeftBTNID()).setVisibility(View.INVISIBLE);
+        findViewById(DataManager.getRightBTNID()).setVisibility(View.INVISIBLE);
+        StepCallback stepCallback = new StepCallback() {
+            @Override
+            public void stepLeft() {
+                gameManager.moveLeft(null);
+            }
+
+            @Override
+            public void stepRight() {
+                gameManager.moveRight(null);
+            }
+
+        };
+        stepDetector = new StepDetector(this.getApplicationContext(), stepCallback);
+        stepDetector.start();
     }
 
     private void findView() {
@@ -63,11 +88,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveLeft(View view) {
-        gameManager.moveLeft(view);
+        if (!sensorMode)
+            gameManager.moveLeft(view);
     }
 
     public void moveRight(View view) {
-        gameManager.moveRight(view);
+        if (!sensorMode)
+            gameManager.moveRight(view);
     }
 
     @Override
@@ -79,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         gameManager.startTime();
-        //stepDetector.start();
+        if (stepDetector != null)
+            stepDetector.start();
         super.onResume();
     }
 
@@ -87,15 +115,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         gameManager.stopTime();
         SignalGenerator.releaseMediaPlayer();
-        //stepDetector.stop();
+        stepDetector.stop();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
         gameManager.stopTime();
-        //stepDetector.stop();
         super.onStop();
     }
-
 }

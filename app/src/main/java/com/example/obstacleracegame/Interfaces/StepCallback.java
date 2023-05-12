@@ -1,9 +1,9 @@
 package com.example.obstacleracegame.Interfaces;
 
 public interface StepCallback {
-    void stepX();
+    void stepLeft();
 
-    void stepY();
+    void stepRight();
 
-    void stepZ();
+    //  void stepZ();
 }
