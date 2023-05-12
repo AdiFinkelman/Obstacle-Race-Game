@@ -37,7 +37,7 @@
         <activity
             android:name=".Models.MenuActivity"
             android:exported="true"
-            android:screenOrientation="unspecified">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,11 +47,11 @@
         <activity
             android:name=".Models.MainActivity"
             android:exported="true"
-            android:screenOrientation="unspecified" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Fragments.FragmentActivity"
             android:exported="true"
-            android:screenOrientation="unspecified" />
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
