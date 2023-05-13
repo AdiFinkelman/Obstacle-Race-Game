@@ -29,5 +29,8 @@ A table of the first 10 records.  When you click on any record, you will see the
 <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/25c915f9-0611-45e8-b7af-867c223c2140" width="184.5" height="400" title="Buttons Play">  <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/909f9e30-06f4-4471-9c18-6c839376b42d" width="184.5" height="400"> <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/e0b723a9-ed0a-499b-8475-a9bebb9dd348" width="184.5" height="400">
 
 ## Technical details
-The game created on Android Studio by Java language.
-It uses Gson to save data on device. 
+Programming language: The game was created using Java in Android Studio.
+Libraries: The game uses the Gson library to save data using Shared Preferences.
+APIs: The game utilizes the Google Maps API to display locations of records on a map.
+Build tools: Gradle is used to build and package the game for distribution.
+Platforms and devices: The game is suitable for Android devices.
