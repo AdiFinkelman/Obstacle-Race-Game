@@ -8,6 +8,13 @@ Once you've finished a game, you can check out the Record Table to see the high 
 
 Are you ready to take on the challenge of Obstacle Race Game? Download the game now and start driving!
 
+## Installation
+To install the game download the game from the following link:
+
+```bash
+git clone https://github.com/AdiFinkelman/ObstacleRaceGame.git
+```
+
 ## Launch
 To start playing click on the application icon on your device.
 You will be taken to the Main Menu, where you should choose an option from the following four:
