@@ -23,7 +23,7 @@ You will be taken to the Main Menu, where you should choose an option from the f
 <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/3f7bbe56-2239-4d46-a526-0d0803ee966a" width="184.5" height="400">
 
 ## Features
-### Play with button 
+### Play with button
 In Fast Mode and Slow Mode you will play by using buttons on screen to move the car left and write.
 ### Play with sensors
 In Sensors Mode you will play without buttons but instead with the sensors of your phone.
