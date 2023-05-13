@@ -37,7 +37,7 @@ In Sensors Mode you will play without buttons but instead with the sensors of yo
 ### Leaderboard
 A table of the first 10 records.  When you click on any record, you will see the location where it was achieved displayed on a Google Map.
 ### Images for example
-<img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/25c915f9-0611-45e8-b7af-867c223c2140" width="184.5" height="400" title="Buttons Play">  <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/909f9e30-06f4-4471-9c18-6c839376b42d" width="184.5" height="400"> <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/e0b723a9-ed0a-499b-8475-a9bebb9dd348" width="184.5" height="400">
+<img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/25c915f9-0611-45e8-b7af-867c223c2140" width="184.5" height="400" title="Buttons Play"> <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/e0b723a9-ed0a-499b-8475-a9bebb9dd348" width="184.5" height="400"> <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/909f9e30-06f4-4471-9c18-6c839376b42d" width="184.5" height="400">
 
 ## Technical details
 Programming language: The game was created using Java in Android Studio.
