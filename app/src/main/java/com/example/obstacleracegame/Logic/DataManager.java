@@ -48,7 +48,7 @@ public class DataManager {
     private static final int recordsButtonID = R.id.menu_BTN_Records;
     private static final int soundCrashID = R.raw.sound_crash;
     private static final int soundCoinID = R.raw.sound_coin;
-    private static final float DEFAULT_ZOOM = 12.0f;
+    private static final float DEFAULT_ZOOM = 14.0f;
     private static final int FAST_MODE = 500;
     private static final int SLOW_MODE = 1000;
 

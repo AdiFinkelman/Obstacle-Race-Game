@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        gameManager.stopTime();
+        onStop();
         super.onPause();
     }
 
@@ -113,15 +113,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        gameManager.stopTime();
+        onStop();
         SignalGenerator.releaseMediaPlayer();
-        stepDetector.stop();
+        if (stepDetector != null)
+            stepDetector.stop();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
         gameManager.stopTime();
+        if (stepDetector != null)
+            stepDetector.stop();
         super.onStop();
     }
 }

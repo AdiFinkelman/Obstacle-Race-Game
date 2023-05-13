@@ -65,4 +65,5 @@ public class MenuActivity extends AppCompatActivity {
     public static void setSensorMode(boolean mode) {
         sensorMode = mode;
     }
+    
 }

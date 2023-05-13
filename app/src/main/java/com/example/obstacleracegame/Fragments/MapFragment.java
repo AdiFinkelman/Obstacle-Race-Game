@@ -47,16 +47,14 @@ public class MapFragment extends Fragment {
             marker.remove();
         marker = gMap.addMarker(new MarkerOptions()
                 .position(latLng));
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 0.0f));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20.0f));
         gMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
     }
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(googleMap -> {
-            gMap = googleMap;
-        });
+        mapFragment.getMapAsync(googleMap -> gMap = googleMap);
     }
 
     public void getLocationPermission() {
