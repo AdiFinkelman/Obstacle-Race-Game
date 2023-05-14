@@ -8,26 +8,44 @@ Once you've finished a game, you can check out the Record Table to see the high 
 
 Are you ready to take on the challenge of Obstacle Race Game? Download the game now and start driving!
 
+## Installation
+To install the game and run it on Android Studio download the game from the following link:
+
+```bash
+git clone https://github.com/AdiFinkelman/ObstacleRaceGame.git
+```
+
 ## Launch
 To start playing click on the application icon on your device.
 You will be taken to the Main Menu, where you should choose an option from the following four:
+
 1. Fast Mode - to play at a high level
+
 2. Slow Mode - for beginners or if you prefer to play at a more relaxed pace.
+ 
 3. Sensors - to play using your phone's motion sensors.
+
 4. Records - to see your high scores and the location of each one.
 
 <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/3f7bbe56-2239-4d46-a526-0d0803ee966a" width="184.5" height="400">
 
 ## Features
-### Play with button 
+### Play with button
 In Fast Mode and Slow Mode you will play by using buttons on screen to move the car left and write.
 ### Play with sensors
 In Sensors Mode you will play without buttons but instead with the sensors of your phone.
 ### Leaderboard
 A table of the first 10 records.  When you click on any record, you will see the location where it was achieved displayed on a Google Map.
-### Image for example
-<img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/25c915f9-0611-45e8-b7af-867c223c2140" width="184.5" height="400" title="Buttons Play">  <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/909f9e30-06f4-4471-9c18-6c839376b42d" width="184.5" height="400"> <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/e0b723a9-ed0a-499b-8475-a9bebb9dd348" width="184.5" height="400">
+### Images for example
+<img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/25c915f9-0611-45e8-b7af-867c223c2140" width="184.5" height="400" title="Buttons Play"> <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/e0b723a9-ed0a-499b-8475-a9bebb9dd348" width="184.5" height="400"> <img src="https://github.com/AdiFinkelman/ObstacleRaceGame/assets/126038641/909f9e30-06f4-4471-9c18-6c839376b42d" width="184.5" height="400">
 
 ## Technical details
-The game created on Android Studio by Java language.
-It uses Gson to save data on device. 
+Programming language: The game was created using Java in Android Studio.
+
+Libraries: The game uses the Gson library to save data using Shared Preferences.
+
+APIs: The game utilizes the Google Maps API to display locations of records on a map.
+
+Build tools: Gradle is used to build and package the game for distribution.
+
+Platforms and devices: The game is suitable for Android devices.
