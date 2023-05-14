@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
         StepCallback stepCallback = new StepCallback() {
             @Override
             public void stepLeft() {
-                gameManager.moveLeft(null);
+                gameManager.moveLeft();
             }
 
             @Override
             public void stepRight() {
-                gameManager.moveRight(null);
+                gameManager.moveRight();
             }
 
         };
@@ -89,12 +89,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void moveLeft(View view) {
         if (!sensorMode)
-            gameManager.moveLeft(view);
+            gameManager.moveLeft();
     }
 
     public void moveRight(View view) {
         if (!sensorMode)
-            gameManager.moveRight(view);
+            gameManager.moveRight();
+    }
+
+    @Override
+    public void onBackPressed() {
+        gameManager.openMenuActivity();
     }
 
     @Override
@@ -117,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         SignalGenerator.releaseMediaPlayer();
         if (stepDetector != null)
             stepDetector.stop();
+        gameManager.openMenuActivity();
         super.onDestroy();
     }
 

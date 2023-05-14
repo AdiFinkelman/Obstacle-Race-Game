@@ -1,11 +1,13 @@
 package com.example.obstacleracegame.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.obstacleracegame.Interfaces.Map_Callback;
 import com.example.obstacleracegame.Logic.DataManager;
+import com.example.obstacleracegame.Models.MenuActivity;
 import com.example.obstacleracegame.R;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -39,5 +41,16 @@ public class FragmentActivity extends AppCompatActivity {
     private void initFragments() {
         listFragment = new ListFragment();
         mapFragment = new MapFragment();
+    }
+
+    public void openRecordActivity() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        openRecordActivity();
     }
 }

@@ -52,7 +52,7 @@ public class GameManager {
         this.context = context;
     }
 
-    public void moveLeft(View view) {
+    public void moveLeft() {
         if (carIndex > 0) {
             cars[carIndex].setVisibility(View.INVISIBLE);
             cars[carIndex - 1].setVisibility(View.VISIBLE);
@@ -60,7 +60,7 @@ public class GameManager {
         }
     }
 
-    public void moveRight(View view) {
+    public void moveRight() {
         if (carIndex < numOfColumns - 1) {
             cars[carIndex].setVisibility(View.INVISIBLE);
             cars[carIndex + 1].setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class GameManager {
     }
 
     private void collision() {
-        if (crashes >= life)
+        if (crashes == life)
             gameOver();
 
         for (int i = 0; i < numOfColumns; i++) {

@@ -47,11 +47,18 @@ public class MenuActivity extends AppCompatActivity {
     private void openRecordsActivity() {
         Intent intent = new Intent(this, FragmentActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finishAffinity();
     }
 
     public static int getMode() {
@@ -65,5 +72,4 @@ public class MenuActivity extends AppCompatActivity {
     public static void setSensorMode(boolean mode) {
         sensorMode = mode;
     }
-    
 }
