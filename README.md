@@ -15,6 +15,9 @@ To install the game and run it on Android Studio download the game from the foll
 git clone https://github.com/AdiFinkelman/ObstacleRaceGame.git
 ```
 
+## Tutorial
+[Click here](https://github.com/AdiFinkelman/Obstacle-Race-Game/blob/master/Obstacle%20Race%20Game.mp4) to watch tutorial!
+
 ## Launch
 To start playing click on the application icon on your device.
 You will be taken to the Main Menu, where you should choose an option from the following four:
